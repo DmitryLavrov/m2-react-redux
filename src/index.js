@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import configureStore from './store/store'
-import * as actions from './store/task/actions'
+import { taskCompleted, taskDeleted, titleChanged } from './store/task'
 
 const store = configureStore()
 
@@ -17,15 +17,15 @@ const App = () => {
   }, [])
 
   const completeTask = (id) => {
-    store.dispatch(actions.taskCompleted(id))
+    store.dispatch(taskCompleted(id))
   }
 
   const changeTitle = (id) => {
-    store.dispatch(actions.titleChanged(id))
+    store.dispatch(titleChanged(id))
   }
 
   const deleteTask = (id) => {
-    store.dispatch(actions.taskDeleted(id))
+    store.dispatch(taskDeleted(id))
   }
 
   return (
