@@ -1,38 +1,30 @@
+import { createAction } from '@reduxjs/toolkit'
 
-const TASK_UPDATED = 'task/updated'
-const TASK_DELETED = 'task/deleted'
+const updateTask = createAction('task/updated')
+const deleteTask = createAction('task/deleted')
 
 export const taskCompleted = (id) => {
-  return {
-    type: TASK_UPDATED,
-    payload: {id, completed: true}
-  }
+  return updateTask({id, completed: true})
 }
 
 export const titleChanged = (id) => {
-  return {
-    type: TASK_UPDATED,
-    payload: {id, title: `New title for ${id}`}
-  }
+  return updateTask({id, title: `New title for ${id}`})
 }
 
 export const taskDeleted = (id) => {
-  return {
-    type: TASK_DELETED,
-    payload: {id}
-  }
+  return deleteTask({id})
 }
 
 function reducer(state = [], action) {
   switch (action.type) {
-    case TASK_UPDATED: {
+    case updateTask.type: {
       const arr = [...state]
       const idx = arr.findIndex(i => i.id === action.payload.id)
       arr[idx] = {...arr[idx], ...action.payload}
       return arr
     }
 
-    case TASK_DELETED: {
+    case deleteTask.type: {
       return state.filter(i => i.id !== action.payload.id)
     }
 
