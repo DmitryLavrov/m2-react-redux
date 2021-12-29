@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import configureStore from './store/store'
-import { taskCompleted, taskDeleted, titleChanged, completeTask } from './store/task'
+import { taskDeleted, titleChanged, completeTask, getTasks } from './store/task'
 
 const store = configureStore()
 
@@ -10,21 +10,12 @@ const App = () => {
   const [state, setState] = useState(store.getState())
 
   useEffect(() => {
+    store.dispatch(getTasks())
     store.subscribe(() => {
         setState(store.getState())
       }
     )
   }, [])
-
-  // const completeTask = (id) => {
-  //   store.dispatch((dispatch, getState) => {
-  //     // =========================
-  //     console.log('dispatch:', dispatch)
-  //     console.log('getState:', getState)
-  //     // =========================
-  //     store.dispatch(taskCompleted(id))
-  //   })
-  // }
 
   const changeTitle = (id) => {
     store.dispatch(titleChanged(id))
