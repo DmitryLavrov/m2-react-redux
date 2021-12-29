@@ -22,9 +22,9 @@ const slice = createSlice({
 const {actions, reducer} = slice
 const {updateTask, deleteTask} = actions
 
-export const taskCompleted = (id) => {
-  return updateTask({id, completed: true})
-}
+// export const taskCompleted = (id) => {
+//   return updateTask({id, completed: true})
+// }
 
 export const titleChanged = (id) => {
   return updateTask({id, title: `New title for ${id}`})
@@ -32,6 +32,10 @@ export const titleChanged = (id) => {
 
 export const taskDeleted = (id) => {
   return deleteTask({id})
+}
+
+export const completeTask = id => (dispatch, getState) => {
+  dispatch(updateTask({id, completed: true}))
 }
 
 export default reducer
