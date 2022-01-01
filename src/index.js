@@ -3,20 +3,21 @@ import ReactDOM from 'react-dom'
 import {Provider, useDispatch, useSelector} from 'react-redux'
 
 import configureStore from './store/store'
-import {taskDeleted, titleChanged, completeTask, getTasks} from './store/task'
+import {taskDeleted, titleChanged, completeTask, getTasks, loadTasks, getTasksLoadingStatus} from './store/task'
+import {getError} from './store/errors'
 
 const store = configureStore()
 
 // App
 const App = () => {
-  const state = useSelector(state => state.tasks.entities)
-  const isLoading = useSelector(state => state.tasks.isLoading)
-  const error = useSelector(state => state.errors.entities[0])
+  const state = useSelector(getTasks())
+  const isLoading = useSelector(getTasksLoadingStatus())
+  const error = useSelector(getError())
   const dispatch = useDispatch()
 
   console.log('state:', state)
   useEffect(() => {
-    dispatch(getTasks())
+    dispatch(loadTasks())
   }, [])
 
   const changeTitle = (id) => {
@@ -43,7 +44,7 @@ const App = () => {
           <li key={s.id}>{<>
             <p>{s.title + ' ' + s.completed}</p>
             <button onClick={() => dispatch(completeTask(s.id))}>
-              Push
+              Complete
             </button>
             <button onClick={() => changeTitle(s.id)}>
               Title
