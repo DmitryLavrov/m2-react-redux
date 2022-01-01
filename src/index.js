@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import ReactDOM from 'react-dom'
 import configureStore from './store/store'
-import { taskDeleted, titleChanged, completeTask, getTasks } from './store/task'
+import {taskDeleted, titleChanged, completeTask, getTasks} from './store/task'
+import {Provider} from 'react-redux'
 
 const store = configureStore()
 
@@ -50,7 +51,9 @@ const App = () => {
 
 ReactDOM.render(
   <React.StrictMode>
-    <App/>
+    <Provider store={store}>
+      <App/>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 )
