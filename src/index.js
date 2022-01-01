@@ -2,20 +2,16 @@ import React, {useEffect, useState} from 'react'
 import ReactDOM from 'react-dom'
 import configureStore from './store/store'
 import {taskDeleted, titleChanged, completeTask, getTasks} from './store/task'
-import {Provider} from 'react-redux'
+import {Provider, useSelector} from 'react-redux'
 
 const store = configureStore()
 
 // App
 const App = () => {
-  const [state, setState] = useState(store.getState())
+  const state = useSelector(state => state)
 
   useEffect(() => {
     store.dispatch(getTasks())
-    store.subscribe(() => {
-        setState(store.getState())
-      }
-    )
   }, [])
 
   const changeTitle = (id) => {
