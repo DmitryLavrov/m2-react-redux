@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import {Provider, useDispatch, useSelector} from 'react-redux'
 
 import configureStore from './store/store'
-import {taskDeleted, titleChanged, completeTask, getTasks, loadTasks, getTasksLoadingStatus} from './store/task'
+import {taskDeleted, titleChanged, completeTask, getTasks, loadTasks, getTasksLoadingStatus, taskCreated} from './store/task'
 import {getError} from './store/errors'
 
 const store = configureStore()
@@ -28,6 +28,10 @@ const App = () => {
     dispatch(taskDeleted(id))
   }
 
+  const createTask = () => {
+    dispatch(taskCreated({title: 'New task', completed: false}))
+  }
+
   if (isLoading) {
     return <h1>Loading...</h1>
   }
@@ -39,6 +43,9 @@ const App = () => {
   return (
     <>
       <h1>APP</h1>
+      <button onClick={() => createTask()}>
+        Create
+      </button>
       <ul>
         {state.map(s =>
           <li key={s.id}>{<>

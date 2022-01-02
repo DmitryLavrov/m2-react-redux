@@ -13,7 +13,6 @@ const taskSlice = createSlice({
       state.entities[idx] = {...state.entities[idx], ...action.payload}
     },
     deleteTask(state, action) {
-      console.log(action.payload.id)
       state.entities = state.entities.filter(i => i.id !== action.payload.id)
     },
     received(state, action) {
@@ -26,11 +25,16 @@ const taskSlice = createSlice({
     taskRequestFailed(state) {
       state.isLoading = false
     },
+    created(state, action) {
+      console.log('created(state, action)', state, action)
+      state.entities.push(action.payload)
+      state.isLoading = false
+    }
   }
 })
 
 const {actions, reducer: taskReducer} = taskSlice
-const {updateTask, deleteTask, received, taskRequested, taskRequestFailed} = actions
+const {updateTask, deleteTask, received, taskRequested, taskRequestFailed, created} = actions
 
 export const titleChanged = (id) => {
   return updateTask({id, title: `New title for ${id}`})
@@ -48,6 +52,7 @@ export const loadTasks = () => async (dispatch) => {
   dispatch(taskRequested())
   try {
     const data = await todosService.fetch()
+    console.log('loadTask - data', data)
     dispatch(received(data))
   } catch (err) {
     dispatch(taskRequestFailed())
@@ -57,5 +62,20 @@ export const loadTasks = () => async (dispatch) => {
 
 export const getTasks = () => (state) => state.tasks.entities
 export const getTasksLoadingStatus = () => (state) => state.tasks.loading
+
+
+export const taskCreated = (task) => {
+  return createTask(task)
+}
+export const createTask = (task) => async (dispatch) => {
+  dispatch(taskRequested())
+  try {
+    const data = await todosService.post(task)
+    dispatch(created(data))
+  } catch (err) {
+    dispatch(taskRequestFailed())
+    dispatch(setError(err.message))
+  }
+}
 
 export default taskReducer
